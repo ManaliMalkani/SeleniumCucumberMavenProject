@@ -29,3 +29,4 @@ Feature: Login feature
     #When user click on Logout Button
     #Then user is navigated to login page
     #Then user is navigated to DeviceManager Home page
+

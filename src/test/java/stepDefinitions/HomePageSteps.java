@@ -22,7 +22,7 @@ public class HomePageSteps {
     }
 
     @Given("user does not have record present in the Device Manager app")
-    public void user_does_not_have_record_present_in_the_device_manager_app() {
+    public void user_does_not_have_record_present_in_the_device_manager_app() throws InterruptedException {
         homePage.deleteAllRecordsPresentInDevice();
     }
 
@@ -49,7 +49,7 @@ public class HomePageSteps {
     }
 
     @Given("user has records present in the Device Manager app")
-    public void user_has_records_present_in_the_device_manager_app() {
+    public void user_has_records_present_in_the_device_manager_app() throws InterruptedException {
         Assert.assertTrue(homePage.checkRecordsPresentInDeviceManagerApp());
     }
 
@@ -72,6 +72,45 @@ public class HomePageSteps {
     public void devices_are_sorted_in_descending_order() {
         Assert.assertTrue(homePage.checkSortingForDeviceNameInDescendingOrder());
     }
+
+    @Given("user has existing one record")
+    public void user_has_existing_one_record() {
+        homePage.clickAddNewButton();
+        homePage.clickOSTypeDropdown();
+        homePage.setDeviceNameTextBox("Mi");
+        homePage.selectValueFromOSTypeDropdown("WindowsPhone");
+        homePage.setCountryCodeTextBox("India");
+        homePage.clickSaveButton();
+    }
+    @When("user select the particular record")
+    public void user_select_the_particular_record() {
+        homePage.selectParticularRecord("Mi","WindowsPhone","India");
+    }
+    @When("user click on Delete Selected Record Button")
+    public void user_click_on_delete_selected_record_button() {
+        homePage.clickDeleteSelectedButton();
+    }
+
+    @Then("record is deleted successfully and record is not visible in the Device Manager app")
+    public void record_is_deleted_successfully_and_record_is_not_visible_in_the_device_manager_app() throws InterruptedException {
+        Assert.assertTrue(homePage.verifyRecordDeletion("Mi","WindowsPhone","India"));
+    }
+
+    @Given("user has existing records")
+    public void user_has_existing_records() throws InterruptedException {
+        Assert.assertTrue(homePage.checkRecordsPresentInDeviceManagerApp());
+    }
+    @When("user select all record")
+    public void user_select_all_record() {
+        homePage.clickSelectAllCheckbox();
+    }
+    @Then("all records are deleted successfully and no record is not visible in the Device Manager app")
+    public void all_records_are_deleted_successfully_and_no_record_is_not_visible_in_the_device_manager_app() throws InterruptedException {
+        Assert.assertFalse(homePage.checkRecordsPresentInDeviceManagerApp());
+    }
+
+
+
 
 
 

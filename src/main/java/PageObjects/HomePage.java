@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class HomePage {
 
@@ -84,6 +85,7 @@ public class HomePage {
     }
 
     public void selectValueFromOSTypeDropdown(String osType) {
+        Wait.untilElementIsClickable(webDriver, logoutButton, 8L);
         for (int i = 0; i <= osTypeDropdownValues.size() - 1; i++) {
             if (osTypeDropdownValues.get(i).getText().contains(osType)) {
                 CommonFunctions.javaScriptExecutorFunction(webDriver, osTypeDropdownValues.get(i));
@@ -106,7 +108,6 @@ public class HomePage {
     public void addedDeviceRecordVerification(String deviceName, String osType, String countryCode) throws ParseException {
 
         for (int i = 1; i <= deviceRecords.size(); i++) {
-            System.out.println("inside the loop");
             String deviceNameXpath = "//table//tbody//tr[" + i + "]//td[2]";
             String osTypeXpath = "//table//tbody//tr[" + i + "]//td[5]";
             String countryCodeXpath = "//table//tbody//tr[" + i + "]//td[3]";
@@ -123,8 +124,6 @@ public class HomePage {
             Calendar calendar = Calendar.getInstance();
             DateTimeFormatter formatterCurrent = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             LocalDate currentDate = LocalDate.parse(deviceDate, formatterCurrent);
-            //SimpleDateFormat formatterCurrent = new SimpleDateFormat("dd-MM-yyyy");
-            //Date currentDate=formatterCurrent.parse(deviceDate);
             if (date.compareTo(currentDate) == 0) {
                 if (((deviceNameElement.getText().equals(deviceName)) && (osTypeElement.getText().equals(osType)) && countryCodeElement.getText().equals(countryCode))) {
                     System.out.println("Record is present");
@@ -156,6 +155,7 @@ public class HomePage {
     }
 
     public void clickDeleteSelectedButton() {
+        Wait.untilElementIsClickable(webDriver, deleteSelectedButton, 10L);
         deleteSelectedButton.isEnabled();
         deleteSelectedButton.click();
     }
@@ -165,8 +165,10 @@ public class HomePage {
         selectAllCheckbox.click();
     }
 
-    public boolean checkRecordsPresentInDeviceManagerApp() {
+    public boolean checkRecordsPresentInDeviceManagerApp() throws InterruptedException {
+        Thread.sleep(5000);
         int size = deviceRecords.size();
+        System.out.println(size);
         boolean flag = false;
         if (size > 0)
             flag = true;
@@ -174,7 +176,7 @@ public class HomePage {
 
     }
 
-    public void deleteAllRecordsPresentInDevice() {
+    public void deleteAllRecordsPresentInDevice() throws InterruptedException {
         if (checkRecordsPresentInDeviceManagerApp() == true) {
             clickSelectAllCheckbox();
             clickDeleteSelectedButton();
@@ -200,8 +202,52 @@ public class HomePage {
             WebElement deviceNameElement = webDriver.findElement(By.xpath(deviceNameXpath));
             deviceName.add(deviceNameElement.getText());
         }
+        System.out.println(deviceName);
         return CommonFunctions.checkSortingInDescending(deviceName);
     }
 
-}
+    public void selectParticularRecord(String deviceName, String osType, String countryCode){
+        Wait.untilListElementIsVisible(webDriver,deviceRecords,10L);
+        System.out.println(deviceRecords.size());
+        int j=0;
+        for (int i = 0; i < deviceRecords.size(); i++) {
+            j=i+1;
+            String deviceNameXpath = "//table//tbody//tr[" + j + "]//td[2]";
+            String osTypeXpath = "//table//tbody//tr[" + j + "]//td[5]";
+            String countryCodeXpath = "//table//tbody//tr[" + j + "]//td[3]";
+            WebElement deviceNameElement = webDriver.findElement(By.xpath(deviceNameXpath));
+            WebElement osTypeElement = webDriver.findElement(By.xpath(osTypeXpath));
+            WebElement countryCodeElement = webDriver.findElement(By.xpath(countryCodeXpath));
+            if (((deviceNameElement.getText().equals(deviceName)) && (osTypeElement.getText().equals(osType)) && countryCodeElement.getText().equals(countryCode))) {
+                System.out.println(deviceNameElement.getText());
+                String selectRecordButton = "//table//tbody//tr[" + j + "]//td[1]//label//span[2]";
+                System.out.println("//table//tbody//tr[" + j + "]//td[1]//label//span[2]");
+                WebElement selectRecordButtonElement = webDriver.findElement(By.xpath(selectRecordButton));
+                CommonFunctions.javaScriptExecutorFunction(webDriver,selectRecordButtonElement);
+            }
+        }
+    }
+
+    public boolean verifyRecordDeletion(String deviceName, String osType, String countryCode ) throws InterruptedException {
+        boolean flag = true;
+        for (int i = 1; i <= deviceRecords.size(); i++) {
+            String deviceNameXpath = "//table//tbody//tr[" + i + "]//td[2]";
+            String osTypeXpath = "//table//tbody//tr[" + i + "]//td[5]";
+            String countryCodeXpath = "//table//tbody//tr[" + i + "]//td[3]";
+            WebElement deviceNameElement = webDriver.findElement(By.xpath(deviceNameXpath));
+            WebElement osTypeElement = webDriver.findElement(By.xpath(osTypeXpath));
+            WebElement countryCodeElement = webDriver.findElement(By.xpath(countryCodeXpath));
+            Thread.sleep(5000);
+            if (((deviceNameElement.getText().equals(deviceName)) && (osTypeElement.getText().equals(osType)) && countryCodeElement.getText().equals(countryCode))) {
+                System.out.println(deviceNameElement.getText());
+                System.out.println("inside");
+                flag=false;
+            }
+        }
+        return flag;
+    }
+    }
+
+
+
 

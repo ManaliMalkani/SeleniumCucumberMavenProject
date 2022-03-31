@@ -28,11 +28,11 @@ public class AllDriverManager {
     private WebDriver createLocalDriver() {
         switch (driverType) {
             case CHROME:
-                //WebDriverManager.chromedriver().setup();
-                //ChromeOptions chromeOptions = new ChromeOptions();
-                //chromeOptions.addArguments("--headless", "--window-size=1644,868");
-                //webDriver = new ChromeDriver(chromeOptions);
-                webDriver = new ChromeDriver();
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless", "--window-size=1644,868");
+                webDriver = new ChromeDriver(chromeOptions);
+                //webDriver = new ChromeDriver();
                 break;
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
