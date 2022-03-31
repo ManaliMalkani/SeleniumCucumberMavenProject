@@ -20,10 +20,21 @@ public class CommonFunctions {
         }
     }
 
-    public static boolean checkSorting(ArrayList<String> arraylist) {
+    public static boolean checkSortingInAscending(ArrayList<String> arraylist) {
         boolean isSorted = true;
         for (int i = 1; i < arraylist.size(); i++) {
             if (arraylist.get(i - 1).compareTo(arraylist.get(i)) > 0) {
+                isSorted = false;
+                break;
+            }
+        }
+        return isSorted;
+    }
+
+    public static boolean checkSortingInDescending(ArrayList<String> arraylist) {
+        boolean isSorted = true;
+        for (int i = 1; i < arraylist.size()-1; i++) {
+            if (arraylist.get(i-1).compareTo(arraylist.get(i)) < 0) {
                 isSorted = false;
                 break;
             }

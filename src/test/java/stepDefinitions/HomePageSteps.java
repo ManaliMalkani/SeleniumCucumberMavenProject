@@ -64,6 +64,16 @@ public class HomePageSteps {
         Assert.assertTrue(homePage.checkSortingForDeviceNameInAscendingOrder());
     }
 
+    @When("user click on Device Manager Header to sort the list in descending order")
+    public void user_click_on_device_manager_header_to_sort_the_list_in_descending_order() {
+        homePage.setDeviceNameHeaderInDescending();
+    }
+    @Then("Devices are sorted in descending order")
+    public void devices_are_sorted_in_descending_order() {
+        Assert.assertTrue(homePage.checkSortingForDeviceNameInDescendingOrder());
+    }
+
+
 
 
 }

@@ -144,6 +144,17 @@ public class HomePage {
 
     }
 
+    public void setDeviceNameHeaderInDescending() {
+        Wait.untilElementIsClickable(webDriver, deviceNameHeader, 10L);
+        String classAttributeValue = deviceNameHeader.getAttribute("class");
+        deviceNameHeader.click();
+        if (classAttributeValue.contains("descending")) {
+            System.out.println("Record is already in descending order");
+        } else
+            deviceNameHeader.click();
+
+    }
+
     public void clickDeleteSelectedButton() {
         deleteSelectedButton.isEnabled();
         deleteSelectedButton.click();
@@ -177,8 +188,20 @@ public class HomePage {
             WebElement deviceNameElement = webDriver.findElement(By.xpath(deviceNameXpath));
             deviceName.add(deviceNameElement.getText());
         }
-            return CommonFunctions.checkSorting(deviceName);
+            return CommonFunctions.checkSortingInAscending(deviceName);
         }
 
+
+
+    public boolean checkSortingForDeviceNameInDescendingOrder() {
+        ArrayList<String> deviceName=new ArrayList<String>();
+        for (int i = 1; i <= deviceRecords.size(); i++) {
+            String deviceNameXpath = "//table//tbody//tr[" + i + "]//td[2]";
+            WebElement deviceNameElement = webDriver.findElement(By.xpath(deviceNameXpath));
+            deviceName.add(deviceNameElement.getText());
+        }
+        return CommonFunctions.checkSortingInDescending(deviceName);
     }
+
+}
 

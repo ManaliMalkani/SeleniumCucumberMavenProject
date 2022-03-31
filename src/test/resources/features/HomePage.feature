@@ -25,3 +25,8 @@ Feature: HomePage feature
       Given user has records present in the Device Manager app
       When user click on Device Manager Header
       Then Devices are sorted in ascending order
+
+  Scenario: User is able to list all the devices by sorting the name in descending order
+    Given user has records present in the Device Manager app
+    When user click on Device Manager Header to sort the list in descending order
+    Then Devices are sorted in descending order
